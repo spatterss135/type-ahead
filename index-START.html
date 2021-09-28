@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>~~~~~~~~~~~~~~~~~~~~~~~</li>
+      <li>~~~~~~~~~~~~~~~~~~~~~~~</li>
+      <li>~~~~~~~~~~~~~~~~~~~~~~~</li>
+      <li>~~~~~~~~~~~~~~~~~~~~~~~</li>
+      <li>~~~~~~~~~~~~~~~~~~~~~~~</li>
+      <li>~~~~~~~~~~~~~~~~~~~~~~~</li>
+      <li>~~~~~~~~~~~~~~~~~~~~~~~</li>
+      <li>~~~~~~~~~~~~~~~~~~~~~~~</li>
+      <li>~~~~~~~~~~~~~~~~~~~~~~~</li>
+      <li>~~~~~~~~~~~~~~~~~~~~~~~</li>
+    </ul>
+  </form>
+<script>
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+let cities = [];
+fetch(endpoint)
+.then(res => res.json())
+.then(data => cities.push(...data))
+.then(() => addEvent())
+
+
+function findMatch(cities) {
+
+  let val = search.value
+  console.log(val)
+  return cities.filter(city => (city.city.toLowerCase().startsWith(val.toLowerCase()) || city.state.toLowerCase().startsWith(val.toLowerCase())))
+}
+
+
+
+const search = document.querySelector('.search')
+
+
+function addEvent() {
+  search.addEventListener('keydown', function () {
+    let apples =  Array.from(findMatch(cities))
+    let butts = apples.slice(0,10)
+    const listItems = document.querySelectorAll('li')
+    let i = 0
+    listItems.forEach(item => {
+      console.log(butts[i])
+      if (butts[i]) {
+          item.textContent = `${butts[i].city}, ${butts[i].state}`
+          item.style.opacity = '1'
+      
+      }
+      else {
+        item.textContent = 'Nada'
+        item.style.opacity = '0'
+      }
+      
+      i++})
+//   setTimeout(function() {
+//     let apples =  Array.from(findMatch(cities))
+//     let butts = apples.slice(0,10)
+//     const listItems = document.querySelectorAll('li')
+//     let i = 0
+//     listItems.forEach(item => {
+//       console.log(butts[i])
+//       if (butts[i]) {
+//           item.textContent = `${butts[i].city}, ${butts[i].state}`
+//           item.style.opacity = '1'
+      
+//       }
+//       else {
+//         item.textContent = 'Nada'
+//         item.style.opacity = '0'
+//       }
+      
+//       i++})
+  
+// }, 0)
+
+  
+})
+
+}
+
+
+</script>
+</body>
+</html>
